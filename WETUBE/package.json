@@ -7,7 +7,7 @@
     "url": "git+https://github.com/GEONWOOHAN/wetube-reloaded.git"
   },
   "scripts": {
-    "dev": "nodemon --exec babel-node index.js"
+    "dev": "nodemon --exec babel-node src/server.js"
   },
   "author": "GEONWOOHAN",
   "license": "MIT",
@@ -16,11 +16,14 @@
   },
   "homepage": "https://github.com/GEONWOOHAN/wetube-reloaded#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
+    "pug": "^3.0.2"
   },
   "devDependencies": {
     "@babel/core": "7.21.3",
     "@babel/node": "7.20.7",
-    "@babel/preset-env": "7.20.2"
+    "@babel/preset-env": "7.20.2",
+    "nodemon": "2.0.21"
   }
 }
