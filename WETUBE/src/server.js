@@ -14,7 +14,6 @@ app.set("view engine", "pug");
 app.set("views", process.cwd() + "/src/views");
 app.use(logger);
 app.use(express.urlencoded({ extended: true }));
-
 app.use(
   session({
     secret: "Hello!",
@@ -23,8 +22,8 @@ app.use(
     store: MongoStore.create({ mongoUrl: "mongodb://127.0.0.1:27017/WETUBE" }),
   })
 );
-
 app.use(localsMiddleware);
+app.use("/uploads", express.static("uploads"));
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
