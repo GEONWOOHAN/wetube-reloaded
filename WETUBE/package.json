@@ -7,7 +7,8 @@
     "url": "git+https://github.com/GEONWOOHAN/wetube-reloaded.git"
   },
   "scripts": {
-    "dev": "nodemon --exec babel-node src/init.js"
+    "dev:server": "nodemon",
+    "dev:assets": "webpack"
   },
   "author": "GEONWOOHAN",
   "license": "MIT",
@@ -30,6 +31,14 @@
     "@babel/core": "7.21.3",
     "@babel/node": "7.20.7",
     "@babel/preset-env": "7.20.2",
-    "nodemon": "2.0.21"
+    "babel-loader": "9.1.2",
+    "css-loader": "6.7.3",
+    "mini-css-extract-plugin": "2.7.5",
+    "nodemon": "2.0.21",
+    "sass": "1.60.0",
+    "sass-loader": "13.2.1",
+    "style-loader": "3.3.2",
+    "webpack": "5.76.3",
+    "webpack-cli": "5.0.1"
   }
 }
