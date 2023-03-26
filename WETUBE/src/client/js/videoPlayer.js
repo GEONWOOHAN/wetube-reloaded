@@ -95,6 +95,7 @@ const handleTimelineSet = () => {
   videoPlayStatus ? video.play() : video.pause();
   setVideoPlayStatus = false;
 };
+
 const handleFullscreen = () => {
   const fullscreen = document.fullscreenElement;
   if (fullscreen) {
@@ -125,16 +126,83 @@ const handleMouseLeave = () => {
     controlsTimeout = setTimeout(hideControls, 3000);
 };
 
+const handleKeydown = (event) => {
+  const fullScreen = document.fullscreenElement;
+  if (event.code === "Space") {
+    event.preventDefault();
+    if (video.paused) {
+      video.play();
+      playPauseBtn.className = "fas fa-pause";
+    } else {
+      video.pause();
+      playPauseBtn.className = "fas fa-play";
+    }
+  }
+  if (event.code === "KeyF" && !fullScreen) {
+    videoContainer.requestFullscreen();
+    fullScreenBtn.innerHTML = "Exit Full Screen";
+  }
+  if (event.code === "Escape" && fullScreen) {
+    document.exitFullscreen();
+    fullScreenBtn.innerHTML = "Enter Full Screen";
+  }
+  if (event.code === "ArrowUp") {
+    if (volumeRange.value < 1) {
+      event.preventDefault();
+      volumeValue += 0.1;
+      video.volume = volumeValue;
+      volumeRange.value = volumeValue;
+    }
+  }
+  if (event.code === "ArrowDown") {
+    if (volumeRange.value > 0) {
+      event.preventDefault();
+      volumeValue -= 0.1;
+      video.volume = volumeValue;
+      volumeRange.value = volumeValue;
+    }
+  }
+  if (event.code === "ArrowLeft") {
+    event.preventDefault();
+    video.currentTime -= 5;
+  }
+  if (event.code === "ArrowRight") {
+    event.preventDefault();
+    video.currentTime += 5;
+  }
+  if (event.code === "KeyM") {
+    if (video.muted) {
+      video.muted = false;
+      volumeRange.value = volumeValue;
+      volumeBtn.className = "fas fa-volume-up";
+    } else {
+      video.muted = true;
+      volumeRange.value = 0;
+      volumeBtn.className = "fas fa-volume-mute";
+    }
+  }
+  console.log(event.code);
+};
+
+const handleEnded = () => {
+  const { id } = videoContainer.dataset;
+  fetch(`/api/videos/${id}/view`, {
+    method: "POST",
+  });
+};
+
 playBtn.addEventListener("click", handlePlayClick);
 muteBtn.addEventListener("click", handleMuteClick);
 volumeRange.addEventListener("input", handleVolumeChange);
-video.addEventListener("loadeddata", handleLoadedMetadata);
+video.addEventListener("loadedmetadata", handleLoadedMetadata);
 video.addEventListener("timeupdate", handleTimeUpdate);
+video.addEventListener("ended", handleEnded);
 videoContainer.addEventListener("mousemove", handleMouseMove);
 videoContainer.addEventListener("mouseleave", handleMouseLeave);
 timeline.addEventListener("input", handleTimelineChange);
 timeline.addEventListener("change", handleTimelineSet);
-fullScreenBtn.addEventListener("click", handleFullscreen);  
+fullScreenBtn.addEventListener("click", handleFullscreen); 
+document.addEventListener("keydown", handleKeydown);
 
 video.readyState
   ? handleMetadata()
